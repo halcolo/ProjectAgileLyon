@@ -1,0 +1,53 @@
+
+
+{% extends "layout.html" %}
+ 
+{% block y %}
+ 
+   {% if session.name %}
+      You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
+      <button id="newGame">Crear nuevo juego</button>
+      <button id="joinGame">Unirse a un juego</button>
+
+      <div id="gameForm" style="display: none;">
+         <form role="form" method="POST" action="{{ url_for('game') }}">
+            <label for="planningName">Planning Name:</label><br>
+            <input type="text" id="planningName" name="planningName"><br>
+
+            <div id="taskContainer">
+               <label for="tasks">Tasks:</label><br>
+               <button id="addTask">Add task</button><br>
+            </div>
+
+            <label for="cardQuantity">Number of cards:</label><br>
+            <select id="cardQuantity" name="cardQuantity">
+                  <option value="20">21 Fibbonacci</option>
+                  <option value="100">100 Fibbonacci</option>
+            </select><br>
+
+            <label for="gameType">Tipo de juego:</label><br>
+            <select id="gameType" name="gameType">
+                  <option value="unanimity">Unanimity</option>
+                  <option value="average">Average</option>
+                  <option value="median">Median</option>
+                  <option value="majority">Majority</option>
+                  <option value="all">All</option>
+            </select><br>
+
+            <input type="submit" value="Crear juego">
+         </form>
+      </div>
+
+      <div id="joinForm" style="display: none;">
+         <form>
+            <label for="gameCode">Código del juego:</label><br>
+            <input type="text" id="gameCode" name="gameCode"><br>
+            <input type="submit" value="Unirse al juego">
+         </form>
+      </div>
+
+      {% else %}
+      You are not Register. <a href="{{ url_for('login') }}">login</a>.
+   {% endif %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
