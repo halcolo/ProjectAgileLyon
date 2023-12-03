@@ -1,21 +1,26 @@
 import statistics
 from config import db
-from utils.utils import generate_token
 
 class Player:
     def __init__(self, name):
-        self.id = generate_token()
         self.name = name
         self.create_user()
+        self.id = None
 
     # def enter_estimate(self, task_id:str, stimate:int):
+    #     task = tasks[task_id]
     #     task.stimations[self.id] = stimate
         
-    def create_user(self):
-        doc_ref = db.collection("users").document(self.id)
+    def create_user(self): 
+        doc_ref = db.collection("users").document()
+        self.id = doc_ref.id
         doc_ref.set({
             'name': self.name,
         })
+        print(f"User {self.name} created with id {self.id}")
+        
+    def get_id(self):
+        return self.id
 
 class Task:
     def __init__(self, id, name, description):

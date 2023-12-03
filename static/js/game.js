@@ -1,4 +1,4 @@
-var tasks = ['Tarea 1', 'Tarea 2', 'Tarea 3']; // Replace with eachtasks
+var tasks = ['Task 1', 'Task 2', 'Task 3']; // Replace with eachtasks
 var fibonacciNumbers = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]; // Fibonacci to 100
 
 // Crear un formulario para cada tarea
@@ -37,6 +37,6 @@ document.getElementById('nextTask').addEventListener('click', function() {
         currentTask.style.display = 'none';
         nextTask.style.display = 'block';
     } else {
-        alert('Todas las tareas completadas!');
+        alert('All Task are completed!');
     }
 });
