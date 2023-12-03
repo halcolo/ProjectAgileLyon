@@ -6,8 +6,8 @@
  
    {% if session.name %}
       You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
-      <button id="newGame">Crear nuevo juego</button>
-      <button id="joinGame">Unirse a un juego</button>
+      <button id="newGame">Create new game</button>
+      <button id="joinGame">Join to game</button>
 
       <div id="gameForm" style="display: none;">
          <form role="form" method="POST" action="{{ url_for('game') }}">
