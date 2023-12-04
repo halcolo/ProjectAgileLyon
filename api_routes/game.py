@@ -1,6 +1,8 @@
-from flask import (render_template, 
-                   redirect)
+from flask import (render_template, redirect)
 from flask.views import MethodView
+from flask import request
+from config import db
+
 
 class GameView(MethodView):
     """
@@ -26,4 +28,8 @@ class GameView(MethodView):
         Returns:
             A redirect to the /game route.
         """
+        planning_name = request.form.get("planningName")
+        data = request.form.get("task1")
+        print(planning_name)
+        print(data)
         return redirect("/game")

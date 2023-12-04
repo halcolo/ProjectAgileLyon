@@ -2,13 +2,17 @@
 
 ## TO DO
 - Create game interface:
-  - [] Using jinja templates create game interface basic.
+  - [] Create game values and show tasks.
+    - [x] Create user interface.
+    - [] Using jinja templates show tasks in game template.
 
 - Improve user interface
   - [] Using Templaters already createds improve using CSS and JS.
 
 - Implement DB
-  - [] implement a non relational DB as Mongo DB or Firestore.
+  - [x] implement a non relational DB as Mongo DB or Firestore.
+  - [] Impement users.
+  - [] Implement Games
 
 ## IN PROGRESS
 - Create Sessions in game:
