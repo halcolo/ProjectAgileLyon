@@ -8,6 +8,15 @@
         <script src="main.js"></script>
     </head>
     <body>
+        {% block x %}
+            {% if session.name %}
+                <a href="{{ url_for('index') }}">Home</a> 
+                <br>
+                You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
+            {% else %}
+                <a href="{{ url_for('login') }}">login</a>
+            {% endif %}
+        {% endblock %}
         {% block y %}{% endblock %}
     </body>
 </html>

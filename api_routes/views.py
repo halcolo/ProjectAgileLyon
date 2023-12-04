@@ -53,9 +53,12 @@ class Login(MethodView):
     
     def post(self):
         name = request.form.get("name")
-        session["name"] = name
-        Player(name)
-        session['player_id'] = Player(name).id
+        email = request.form.get("email")
+        player = Player(name, email)
+        session["name"] = player.name
+        session["email"] = player.email
+        # Player(name, email)
+        session['player_id'] = player.id
         return redirect("/")
         
         
@@ -70,6 +73,7 @@ class Logout(MethodView):
     """
     def get(self):
         """Render the login page."""
+        session.clear()
         return render_template("login.html")
     
     def post(self):
@@ -79,3 +83,4 @@ class Logout(MethodView):
         """
         session.clear()
         return redirect("/")
+    

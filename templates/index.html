@@ -5,7 +5,6 @@
 {% block y %}
  
    {% if session.name %}
-      You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
       <button id="newGame">Create new game</button>
       <button id="joinGame">Join to game</button>
 
@@ -25,7 +24,7 @@
                   <option value="100">100 Fibbonacci</option>
             </select><br>
 
-            <label for="gameType">Tipo de juego:</label><br>
+            <label for="gameType">Game type:</label><br>
             <select id="gameType" name="gameType">
                   <option value="unanimity">Unanimity</option>
                   <option value="average">Average</option>
@@ -34,13 +33,13 @@
                   <option value="all">All</option>
             </select><br>
 
-            <input type="submit" value="Crear juego">
+            <input type="submit" value="Create game">
          </form>
       </div>
 
       <div id="joinForm" style="display: none;">
          <form>
-            <label for="gameCode">Código del juego:</label><br>
+            <label for="gameCode">Game Code:</label><br>
             <input type="text" id="gameCode" name="gameCode"><br>
             <input type="submit" value="Unirse al juego">
          </form>

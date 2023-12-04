@@ -166,4 +166,7 @@ cython_debug/
 flask_session/
 
 # serviceAccountKey
-*.json
+serviceAccountKey.json
+
+# vscode
+.vscode/
