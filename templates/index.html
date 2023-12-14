@@ -1,52 +1,67 @@
 
 
 {% extends "layout.html" %}
- 
+
 {% block y %}
- 
+
    {% if session.name %}
-      <button id="newGame">Create new game</button>
-      <button id="joinGame">Join to game</button>
+      <button id="newTaskButton">Create new task</button>
+      <button id="joinTask">Join to game</button>
 
-      <div id="gameForm" style="display: none;">
+      <div id="newTaskForm" style="display: none;">
          <form role="form" method="POST" action="{{ url_for('game') }}">
-            <label for="planningName">Planning Name:</label><br>
-            <input type="text" id="planningName" name="planningName"><br>
+            <label for="taskgName">Task ID:</label><br>
+            <input type="text" id="taskName" name="taskName"><br>
 
-            <div id="taskContainer">
+            <!-- <div id="taskContainer">
                <label for="tasks">Tasks:</label><br>
                <button id="addTask">Add task</button><br>
-            </div>
+            </div> -->
 
-            <label for="cardQuantity">Number of cards:</label><br>
+            <!-- <label for="cardQuantity">Number of cards:</label><br>
             <select id="cardQuantity" name="cardQuantity">
                   <option value="20">21 Fibbonacci</option>
                   <option value="100">100 Fibbonacci</option>
-            </select><br>
+            </select><br> -->
 
-            <label for="gameType">Game type:</label><br>
-            <select id="gameType" name="gameType">
-                  <option value="unanimity">Unanimity</option>
-                  <option value="average">Average</option>
-                  <option value="median">Median</option>
-                  <option value="majority">Majority</option>
-                  <option value="all">All</option>
+            <label for="gameMode">Game mode:</label><br>
+            <select id="gameMode" name="gameMode">
+               {% for mode, id in modes.items() %}
+                  <option value="{{ id }}">{{ mode }}</option>
+               {% endfor %}
             </select><br>
 
             <input type="submit" value="Create game">
          </form>
       </div>
 
-      <div id="joinForm" style="display: none;">
-         <form>
+      <div id="joinTaskForm" style="display: none;">
+         <form role="form" method="POST" action="{{ url_for('game') }}">
             <label for="gameCode">Game Code:</label><br>
             <input type="text" id="gameCode" name="gameCode"><br>
-            <input type="submit" value="Unirse al juego">
+            <input type="submit" value="Join Game">
          </form>
       </div>
+      <table>
+         <thead>
+            <tr>
+               <th>Join Code</th>
+               <th>Task id</th>
+               <th>Final Score</th>
+            </tr>
+         </thead>
+         <tbody>
+         {% for game in games_list %}
+         <tr>
+            <td>{{ game.id }}</td>
+            <td>{{ game.to_dict().get("task_id") }}</td>
+            <td>{{ game.to_dict().get("final_score") }}</td>
+         </tr>
+      {% endfor %}
+         </tbody>
+      </table>
 
-      {% else %}
-      You are not Register. <a href="{{ url_for('login') }}">login</a>.
+   {% else %}
+      You are not registered. <a href="{{ url_for('login') }}">Login</a>.
    {% endif %}
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

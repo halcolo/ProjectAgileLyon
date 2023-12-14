@@ -1,22 +1,19 @@
 
 <!DOCTYPE html>
- 
+
 <html lang="en">
     <head>
         <meta name="viewport" content="initial-scale=1, width=device-width">
         <title>Planning Poker</title>
-        <script src="main.js"></script>
+        <!-- <script src="main.js"></script> -->
     </head>
     <body>
         {% block x %}
             {% if session.name %}
-                <a href="{{ url_for('index') }}">Home</a> 
-                <br>
                 You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
-            {% else %}
-                <a href="{{ url_for('login') }}">login</a>
             {% endif %}
         {% endblock %}
         {% block y %}{% endblock %}
+        <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>
