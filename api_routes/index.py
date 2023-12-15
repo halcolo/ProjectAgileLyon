@@ -1,9 +1,8 @@
-from flask import (render_template, 
-                   session, 
-                   redirect, 
-                   request)
+from config import db
+from flask import render_template, session, redirect, request
 from flask.views import MethodView
-from packages.planning_poker import Player
+from packages.player import Player
+
 
 class Index(MethodView):
     """Return Hello world message.
@@ -16,6 +15,7 @@ class Index(MethodView):
     Attributes:
         None
     """
+
     def get(self):
         """Handles the GET request for the index view.
 
@@ -31,9 +31,20 @@ class Index(MethodView):
         """
         if not session.get("name"):
             return redirect("/login")
-        return render_template('index.html')
-    
-    
+
+        enterprise_id = session["enterprise"]
+        player_id = session["player_id"]
+
+        modes = db.collection("dicts").document("modes").get().to_dict()
+
+        # modes = list(map(lambda x: x.to_dict().items(), modes))
+
+        games = db.collection("task").where("enterprise", "==", enterprise_id).get()
+        games_list = {
+            game for game in games if player_id in game.to_dict().get("players")
+        }
+        return render_template("index.html", games_list=games_list, modes=modes)
+
 
 class Login(MethodView):
     """Return the Login Page.
@@ -48,20 +59,21 @@ class Login(MethodView):
     Attributes:
         None
     """
+
     def get(self):
         return render_template("login.html")
-    
+
     def post(self):
-        name = request.form.get("name")
-        email = request.form.get("email")
+        name, email = request.form.get("name"), request.form.get("email")
         player = Player(name, email)
-        session["name"] = player.name
-        session["email"] = player.email
-        # Player(name, email)
-        session['player_id'] = player.id
+        session["name"], session["email"] = player.get_data()
+        session["player_id"], session["enterprise"] = (
+            player.get_id(),
+            player.get_enterprise(),
+        )
         return redirect("/")
-        
-        
+
+
 class Logout(MethodView):
     """A class representing the logout functionality.
 
@@ -71,11 +83,12 @@ class Logout(MethodView):
         get(): Renders the login page.
         post(): Logs out the user by clearing the session and redirecting to the home page.
     """
+
     def get(self):
         """Render the login page."""
         session.clear()
         return render_template("login.html")
-    
+
     def post(self):
         """Log out the user.
 
@@ -83,4 +96,3 @@ class Logout(MethodView):
         """
         session.clear()
         return redirect("/")
-    
