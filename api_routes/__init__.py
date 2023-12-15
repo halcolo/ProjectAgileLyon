@@ -4,7 +4,7 @@ from api_routes import index, user, task
 urls = {
     "/": index.Index.as_view("index"),
     "/login": index.Login.as_view("login"),
-    "/task": task.TaskView.as_view("game"),
+    "/task": task.TaskView.as_view("task"),
     "/logout": index.Logout.as_view("logout"),
 }
 

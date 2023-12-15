@@ -30,7 +30,7 @@ class Index(MethodView):
             Otherwise, it renders the index.html template.
         """
         if not session.get("name"):
-            return redirect("/login")
+            return redirect("login")
 
         enterprise_id = session["enterprise"]
         player_id = session["player_id"]
@@ -40,10 +40,11 @@ class Index(MethodView):
         # modes = list(map(lambda x: x.to_dict().items(), modes))
 
         games = db.collection("task").where("enterprise", "==", enterprise_id).get()
-        games_list = {
+        tasks_list = {
             game for game in games if player_id in game.to_dict().get("players")
         }
-        return render_template("index.html", games_list=games_list, modes=modes)
+        cards = db.collection("dicts").document("cards").get().to_dict()['fibbo_13']
+        return render_template("index.html", tasks_list=tasks_list, modes=modes, cards=cards)
 
 
 class Login(MethodView):
@@ -87,7 +88,7 @@ class Logout(MethodView):
     def get(self):
         """Render the login page."""
         session.clear()
-        return render_template("login.html")
+        return redirect("login")
 
     def post(self):
         """Log out the user.
