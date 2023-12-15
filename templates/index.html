@@ -3,65 +3,181 @@
 {% extends "layout.html" %}
 
 {% block y %}
+      <!-- Start buttons user  -->
+      <div class="d-flex" id="accordionSidebar">
+         <div id="page-content-wrapper">
+            <div class="container-fluid">
+               <div class="row">
+                  <div class="col-lg-12">
+                     <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
+                        <div class="bd-code-snippet card-header py-3">
+                           <div class="bd-example m-0 border-0">
+                              <h1 class="m-0 font-weight-bold text-primar">Planning Poker</h1>
+                           </div>
+                        </div>
+                        <div class="accordion" id="accordionExample">
+                           <div class="accordion-item">
+                             <h2 class="accordion-header">
+                               <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                 Create task
+                               </button>
+                             </h2>
+                             <div id="collapseOne" class="accordion-collapse collapsed collapse" data-bs-parent="#accordionExample">
+                               <div class="accordion-body">
+                                 <div class="card-header py-2">
+                                    <div class="card-header py-3">
+                                       <div id="newTaskForm">
+                                          <form role="form" method="POST" action="{{ url_for('task') }}">
+                                             <label for="taskName">Task ID:</label><br>
+                                             <input type="text" id="taskName" name="taskName"><br>
+                                             <label for="gameMode">Game mode:</label><br>
+                                             <select id="gameMode" name="gameMode">
+                                                {% for mode, id in modes.items() %}
+                                                   <option value="{{ id }}">{{ mode }}</option>
+                                                {% endfor %}
+                                             </select><br>
+                  
+                                             <input type="submit" value="Create game">
+                                          </form>
+                                       </div>
+                                    </div>   
+                               </div>
+                             </div>
+                           </div>
+                           <div class="accordion-item">
+                             <h2 class="accordion-header">
+                               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                 Join To task
+                               </button>
+                             </h2>
+                             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                               <div class="accordion-body">
+                                 <div class="card-header py-3">
+                                    <div id="joinTaskForm">
+                                       <form role="form" method="POST" action="{{ url_for('task') }}">
+                                          <label for="taskCode">Game Code:</label><br>
+                                          <input type="text" id="taskCode" name="taskCode"><br>
+                                          <input type="submit" value="Join Game">
+                                       </form>
+                                    </div>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
 
-   {% if session.name %}
-      <button id="newTaskButton">Create new task</button>
-      <button id="joinTask">Join to game</button>
-
-      <div id="newTaskForm" style="display: none;">
-         <form role="form" method="POST" action="{{ url_for('game') }}">
-            <label for="taskgName">Task ID:</label><br>
-            <input type="text" id="taskName" name="taskName"><br>
-
-            <!-- <div id="taskContainer">
-               <label for="tasks">Tasks:</label><br>
-               <button id="addTask">Add task</button><br>
-            </div> -->
-
-            <!-- <label for="cardQuantity">Number of cards:</label><br>
-            <select id="cardQuantity" name="cardQuantity">
-                  <option value="20">21 Fibbonacci</option>
-                  <option value="100">100 Fibbonacci</option>
-            </select><br> -->
-
-            <label for="gameMode">Game mode:</label><br>
-            <select id="gameMode" name="gameMode">
-               {% for mode, id in modes.items() %}
-                  <option value="{{ id }}">{{ mode }}</option>
-               {% endfor %}
-            </select><br>
-
-            <input type="submit" value="Create game">
-         </form>
+                           <!-- </div> -->
+                           You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+      </div>
+      <!-- End buttons user  -->
+      <div class="d-flex flex-column">
+         <!-- Start Task Table -->
+         <div class="card-body">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+               <thead>
+                  <tr>
+                     <th>Join Code</th>
+                     <th>Task id</th>
+                     <th>Final Score</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+               {% for task in tasks_list %}
+               <tr>
+                  <td id="taskJoin{{ loop.index }}">{{ task.id }}</td>
+                  <td id="taskName{{ loop.index }}">{{ task.to_dict().get("task_id") }}</td>
+                  <td id="taskScore{{ loop.index }}">{{ task.to_dict().get("final_score") }}</td>
+                  <td><a id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
+               </tr>
+            {% endfor %}
+               </tbody>
+            </table>
+         </div>
+         <!-- End Task Table -->
       </div>
 
-      <div id="joinTaskForm" style="display: none;">
-         <form role="form" method="POST" action="{{ url_for('game') }}">
-            <label for="gameCode">Game Code:</label><br>
-            <input type="text" id="gameCode" name="gameCode"><br>
-            <input type="submit" value="Join Game">
-         </form>
-      </div>
-      <table>
-         <thead>
-            <tr>
-               <th>Join Code</th>
-               <th>Task id</th>
-               <th>Final Score</th>
-            </tr>
-         </thead>
-         <tbody>
-         {% for game in games_list %}
-         <tr>
-            <td>{{ game.id }}</td>
-            <td>{{ game.to_dict().get("task_id") }}</td>
-            <td>{{ game.to_dict().get("final_score") }}</td>
-         </tr>
-      {% endfor %}
-         </tbody>
-      </table>
+      <div class="d-flex flex-column">
+         <!-- Start planning poker -->
+         <div id="content-wrapper" class="d-flex flex-column">
 
-   {% else %}
-      You are not registered. <a href="{{ url_for('login') }}">Login</a>.
-   {% endif %}
+            <!-- Main Content -->
+            <div id="playPoker" style="display: none;">
+
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="card shadow mb-4">
+                           <div class="bd-code-snippet card-header py-3">
+                              <div class="bd-example m-0 border-0">
+                                 <h6 class="m-0 font-weight-bold text-primary">Planning Poker</h6>
+                              </div>
+                           </div>
+                           <div class="card-body">
+                              <div class="container">
+                                 <form method="PUT" action="{{ url_for('task') }}">
+                                    <div class="mb-3 row">
+                                       <Label for="floatingInputValue" class="col-form-legend col-4">
+                                          Join Code
+                                       </Label>
+                                       <!-- <label for="joinCode" class="col-4 col-form-label">Join Code</label> -->
+                                       <div class="col-8">
+                                          <input type="text" class="form-control" name="TaskId" id="TaskId" placeholder="Task Id" readonly/>
+                                       </div>
+                                    </div>
+                                    <div class="mb-3 row">
+                                       <Label for="floatingInputValue" class="col-form-legend col-4">
+                                          Task Name
+                                       </Label>
+                                       <!-- <label for="taskName" class="col-4 col-form-label">name</label> -->
+                                       <div class="col-8">
+                                          <input type="text" class="form-control" name="TaskName" id="TaskName" placeholder="Task name" readonly/>
+                                       </div>
+                                    </div>
+                                       <fieldset class="mb-3 row">
+                                       <Label class="col-form-legend col-4">
+                                          Select your card
+                                       </Label>
+                                       <div class="col-8">
+                                          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                             {% for card in cards %}
+                                             <!-- <input type="radio" class="btn-check" name="{{ card }}" id="btnradio{{ loop.index }}" autocomplete="off" required/> -->
+                                             <input type="radio" class="btn-check" name="btnradio" value="{{ card }}" id="btnradio{{ loop.index }}" autocomplete="off">
+                                                {% if card == "coffee" %}
+                                                   <!-- <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> ☕️ </label> -->
+                                                   <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> ☕️ </label>
+                                                {% else %}
+                                                <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> {{ card }} </label>
+                                                {% endif %}
+                                             {% endfor %}
+                                           </div>
+                                       </div>
+                                    </fieldset>
+                                    <div class="mb-3 row">
+                                       <div class="offset-sm-4 col-sm-8">
+                                          <button type="submit" class="btn btn-primary" action="{{ url_for('task') }}">
+                                             Send
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </form>
+                              </div>
+                              
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+               
+            </div>
+         </div>
+         <!-- End planning poker -->
+      </div>
+
+   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

@@ -6,14 +6,13 @@ class Player:
     def __init__(self, name, email):
         self.name = name
         self.email = email
-        self.create_user()
         self.__id: str
+        self.get_user()
 
-    # def enter_estimate(self, task_id:str, stimate:int):
-    #     task = tasks[task_id]
-    #     task.stimations[self.__id] = stimate
-
-    def create_user(self):
+    def get_user(self):
+        """
+        Get the user from the database.
+        """
         player = self.get_player_by_email(self.email)
         if player:
             self.__id = player["id"]
@@ -21,7 +20,11 @@ class Player:
             self.email = player["email"]
             self.enterprise = player["enterprise"]
             logging.info(f"Player {self.name} found with id {self.get_id()}")
-        else:
+        
+    def create_user(self):
+            """
+            Creates a new user in the database with the provided name and email.
+            """
             doc_ref = db.collection("users").document()
             self.__id = doc_ref.id
             doc_ref.set(

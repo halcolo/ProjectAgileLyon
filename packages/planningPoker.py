@@ -49,31 +49,3 @@ class Task:
         self.players = list()
         self.tasks = list()
 
-
-#     def reveal_estimates(self):
-#         for player in self.players:
-#             print(f"{player.name}'s estimate: {player.estimate}")
-
-#     def calculate_result(self):
-#         if self.mode == None:
-#             self.select_modes()
-#         estimates = [player.estimate for player in self.players]
-#         if self.mode == "Unanimity":
-#             if len(set(estimates)) == 1:
-#                 print(f"Unanimity result: {estimates[0]}")
-#             else:
-#                 print("No unanimity")
-#         elif self.mode == "Average":
-#             print(f"Average result: {sum(estimates) / len(estimates)}")
-#         elif self.mode == "Median":
-#             print(f"Median result: {statistics.median(estimates)}")
-#         elif self.mode == "Majority":
-#             print(f"Majority result: {max(set(estimates), key=estimates.count)}")
-#         elif self.mode == "All":
-#             if len(set(estimates)) == 1:
-#                 print(f"Unanimity result: {estimates[0]}")
-#             else:
-#                 print("No unanimity")
-#             print(f"Average result: {sum(estimates) / len(estimates)}")
-#             print(f"Median result: {statistics.median(estimates)}")
-#             print(f"Majority result: {max(set(estimates), key=estimates.count)}")

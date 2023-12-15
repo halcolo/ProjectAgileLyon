@@ -5,20 +5,17 @@
 - Improve user interface
   - [ ] Using Templaters already createds improve using CSS and JS.
 
+- task calculation
+  - [ ] Implement task calculation.
+
+- UI/UX
+  - [ ] Finish UI/UX improvement.
+
 ## IN PROGRESS
 - Create game interface:
-  - [ ] Implement game window
   - [ ] Implement game voting into interface
   - [ ] Pass logic of user creation to UI
-
-- Implement DB
-  - [x] implement a non relational DB as Mongo DB or Firebase.
-  - [x] Impement users.
-  - [x] Implement Games
-  - [x] Implement enterprises
-  - [x] Get each task
-  - [ ] Create task into DB
-  - [ ] update tasks in DB
+  - [x] Implement game window
 
 
 ## DONE:
@@ -33,3 +30,12 @@
 
 - Create user login interface:
   - [x] Create user interface using HTML
+
+- Implement DB
+  - [x] implement a non relational DB as Mongo DB or Firebase.
+  - [x] Impement users.
+  - [x] Implement Games
+  - [x] Implement enterprises
+  - [x] Get each task
+  - [x] Create task into DB
+  - [x] update tasks in DB
