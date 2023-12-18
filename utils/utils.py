@@ -43,16 +43,70 @@ def db_create_doc(collection_name: str, data: dict, auto_id: bool = True):
         return response(f"An error occurred while crating the document: {e}", 500)
 
 
-def db_add_player_2_task(player_id: str, game_code: str):
+def db_add_player_2_task(player_id: str, task_id: str):
     try:
-        game = db.collection("task").document(game_code).get().to_dict()
+        game = db.collection("task").document(task_id).get().to_dict()
         players = game["players"]
         players[player_id] = 0
         game["players"] = players
-        db.collection("task").document(game_code).set(game)
-        return response(f"Player {player_id} added to game {game_code}")
+        db.collection("task").document(task_id).set(game)
+        return response(f"Player {player_id} added to game {task_id}")
     except Exception as e:
         return response(
-            f"An error occurred while adding player {player_id} to game {game_code}: {e}",
+            f"An error occurred while adding player {player_id} to game {task_id}: {e}",
             500,
         )
+
+def update_task_points(player_id:str,
+                       task_id:str, 
+                       score:str, 
+                       collection:str="task"):
+    try:
+        game = db.collection(collection).document(task_id).get().to_dict()
+        players = game["players"]
+        if player_id in players.keys():
+            players[player_id] = score
+        game["players"] = players
+        db.collection(collection).document(task_id).set(game)
+        return response(f"Player {player_id} added to game {task_id}")
+    except Exception as e:
+        return response(
+            f"An error occurred while adding player {player_id} to game {task_id}: {e}",
+            500,
+        )
+
+def evaluate_task(
+    task_id: str, collection: str = "task", game_mode: str = "fibbo_13"
+):
+    try:
+        game = db.collection(collection).document(task_id).get().to_dict()
+        players = game["players"]
+        scores = [int(score) for score in players.values()]
+        final_score = 0
+        if game_mode == "fibbo_13":
+            final_score = fibbo_13(scores)
+        game["final_score"] = final_score
+        db.collection(collection).document(task_id).set(game)
+        return response(f"Game {task_id} evaluated successfully")
+    except Exception as e:
+        return response(f"An error occurred while evaluating game {task_id}: {e}", 500)
+    
+def reveal_estimates(self):
+    for player in self.players:
+        print(f"{player.name}'s estimate: {player.estimate}")
+
+def calculate_result(self):
+    if self.mode == None:
+        self.select_modes()
+    estimates = [player.estimate for player in self.players]
+    if self.mode == "Unanimity":
+        if len(set(estimates)) == 1:
+            print(f"Unanimity result: {estimates[0]}")
+        else:
+            print("No unanimity")
+    elif self.mode == "Average":
+        print(f"Average result: {sum(estimates) / len(estimates)}")
+    elif self.mode == "Median":
+        print(f"Median result: {statistics.median(estimates)}")
+    elif self.mode == "Majority":
+        print(f"Majority result: {max(set(estimates), key=estimates.count)}")
