@@ -1,9 +1,8 @@
 from flask import jsonify
 from flask import request
+# from tools.general_utils import response_message
 from flask.views import MethodView
-from utils.utils import response
 from firebase_admin import auth
-
 
 class PlayerView(MethodView):
     """
@@ -32,17 +31,19 @@ class PlayerView(MethodView):
         """
         name = request.args.get('name')
         email = request.args.get('email')
+        
+        print(name, email)
 
-        try:
-            # user = auth.get_user_by_email(email)
-            # If the user exists, retrieve the player
-            player = self.game.get_player_by_email(email)
-            if player:
-                return response("Player already exists")
-            else:
-                self.game.add_player(name, email)
-                return response("Player added")
-        except auth.AuthError as e:
-            # Handle the case when the user does not exist
-            return response("User does not exist")
+        # try:
+        #     # user = auth.get_user_by_email(email)
+        #     # If the user exists, retrieve the player
+        #     player = self.game.get_player_by_email(email)
+        #     if player:
+        #         return response_message("Player already exists")
+        #     else:
+        #         self.game.add_player(name, email)
+        #         return response_message("Player added")
+        # except auth.AuthError as e:
+        #     # Handle the case when the user does not exist
+        #     return response_message("User does not exist")
 

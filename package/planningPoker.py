@@ -1,17 +1,13 @@
 import statistics
+from tools.class_utils import Singleton
+from package.player import Player
 from datetime import datetime
 from flask import session
-from utils.utils import db_create_doc
+from tools.general_utils import db_create_doc
 
 
+@Singleton
 class Task:
-    _instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super().__new__(cls)
-        return cls._instance
-
     def __init__(self, task_id: str, mode: str):
         self.id: str
         self.task_id = task_id

@@ -80,7 +80,7 @@
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                <thead>
                   <tr>
-                     <th>Join Code</th>
+                     <th hidden>Join Code</th>
                      <th>Task id</th>
                      <th>Final Score</th>
                      <th>Action</th>
@@ -89,10 +89,10 @@
                <tbody>
                {% for task in tasks_list %}
                <tr>
-                  <td id="taskJoin{{ loop.index }}">{{ task.id }}</td>
-                  <td id="taskName{{ loop.index }}">{{ task.to_dict().get("task_id") }}</td>
-                  <td id="taskScore{{ loop.index }}">{{ task.to_dict().get("final_score") }}</td>
-                  <td><a id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
+                  <td hidden id="taskJoin{{ loop.index }}">{{ task.get('id') }}</td>
+                  <td id="taskName{{ loop.index }}">{{ task.get("task_id") }}</td>
+                  <td id="taskScore{{ loop.index }}">{{ task.get("final_score") }}</td>
+                  <td><a onclick="usersFunction({{task.get('users')}})" id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
                </tr>
             {% endfor %}
                </tbody>
@@ -146,38 +146,37 @@
                                           <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                                              {% for card in cards %}
                                              <!-- <input type="radio" class="btn-check" name="{{ card }}" id="btnradio{{ loop.index }}" autocomplete="off" required/> -->
-                                             <input type="radio" class="btn-check" name="btnradio" value="{{ card }}" id="btnradio{{ loop.index }}" autocomplete="off">
+                                             <input type="radio" class="btn-check" name="btnradio" value="{{ card }}" id="btnradio{{ loop.index }}" autocomplete="off" required="required">
                                                 {% if card == "coffee" %}
                                                    <!-- <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> ☕️ </label> -->
-                                                   <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> ☕️ </label>
+                                                   <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}" required="required"> ☕️ </label>
                                                 {% else %}
-                                                <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}"> {{ card }} </label>
+                                                <label class="btn btn-outline-primary" for="btnradio{{ loop.index }}" required="required"> {{ card }} </label>
                                                 {% endif %}
                                              {% endfor %}
                                            </div>
                                        </div>
                                     </fieldset>
                                     <div class="mb-3 row">
-                                       <div class="offset-sm-4 col-sm-8">
+                                       <div class="col-sm-8">
                                           <button type="submit" class="btn btn-primary" action="{{ url_for('task') }}">
                                              Send
                                           </button>
                                        </div>
+                                       <span class="">
+                                          <div id="usersScores"class="col-sm-8"></div>
+                                       </span>
                                     </div>
                                  </form>
                               </div>
-                              
                            </div>
                         </div>
                      </div>
                   </div>
-                  
                </div>
-               
             </div>
          </div>
          <!-- End planning poker -->
       </div>
-
    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
