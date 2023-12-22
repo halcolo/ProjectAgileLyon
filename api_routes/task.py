@@ -1,8 +1,6 @@
-from packages.planningPoker import Task
-from utils.utils import (
-    db_add_player_2_task,
-    update_task_points,
-)
+from package.task import Task
+from tools.db_utils import db_add_player_2_task
+from tools.general_utils import update_task_points
 from flask import (
     render_template,
     redirect,
@@ -29,7 +27,6 @@ class TaskView(MethodView):
             The rendered game.html template.
         """
         data = request.args.to_dict()
-        print(data)
         self.put(task_id=data["TaskId"], 
                  game_name=data["TaskName"], 
                  score=data["btnradio"])
@@ -43,7 +40,6 @@ class TaskView(MethodView):
             A redirect to the /game route.
         """
         data = request.form.to_dict()
-        print(data)
         if "taskCode" in data.keys():
             db_add_player_2_task(
                 player_id=session["player_id"], 
@@ -68,6 +64,3 @@ class TaskView(MethodView):
                            score=score, 
                            task_id=task_id)
 
-        # self.game = Task(data["taskCode"], data["gameMode"])
-        # self.game.add_player(session["name"], session["email"])
-        # return redirect("/")

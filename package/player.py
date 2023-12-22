@@ -1,12 +1,54 @@
 import logging
 from config import db
 
-
-class Player:
-    def __init__(self, name, email):
+class User:
+    def __init__(self, name) -> None:
         self.name = name
-        self.email = email
         self.__id: str
+        
+    def get_data(self) -> tuple:
+        """
+        Get the name and email of the player.
+
+        Returns:
+            tuple: A tuple containing the name and email of the player.
+        """
+        return self.name, self.__id
+
+
+    def get_id(self):
+        """
+        Returns the ID of the player.
+
+        Returns:
+            int: The ID of the player.
+        """
+        return self.__id
+
+    def set_id(self, id):
+        """
+        Sets the ID of the player.
+
+        Args:
+            id (int): The ID of the player.
+        """
+        self.__id = id
+    def to_dict(self):
+        """
+        Returns a dictionary representation of the player.
+
+        Returns:
+            dict: A dictionary containing the name and email of the player.
+        """
+        return {
+            "name": self.name,
+            "id": self.get_id(),
+        }
+
+class Player(User):
+    def __init__(self, name, email):
+        super().__init__(name)
+        self.email = email
         self.get_user()
 
     def get_user(self):
@@ -15,7 +57,7 @@ class Player:
         """
         player = self.get_player_by_email(self.email)
         if player:
-            self.__id = player["id"]
+            self.set_id(player["id"])
             self.name = player["name"]
             self.email = player["email"]
             self.enterprise = player["enterprise"]
@@ -26,7 +68,7 @@ class Player:
             Creates a new user in the database with the provided name and email.
             """
             doc_ref = db.collection("users").document()
-            self.__id = doc_ref.id
+            self.set_id(doc_ref.id)
             doc_ref.set(
                 {
                     "name": self.name,
@@ -50,15 +92,6 @@ class Player:
 
         return None
 
-    def get_id(self):
-        """
-        Returns the ID of the player.
-
-        Returns:
-            int: The ID of the player.
-        """
-        return self.__id
-
     def get_enterprise(self):
         """
         Returns the enterprise associated with the player.
@@ -68,11 +101,3 @@ class Player:
         """
         return self.enterprise
 
-    def get_data(self) -> tuple:
-        """
-        Get the name and email of the player.
-
-        Returns:
-            tuple: A tuple containing the name and email of the player.
-        """
-        return self.name, self.email
