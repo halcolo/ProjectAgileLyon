@@ -1,5 +1,6 @@
 import logging
 from config import db
+from tools.db_utils import db_get_player_by_email
 
 class User:
     def __init__(self, name) -> None:
@@ -33,6 +34,7 @@ class User:
             id (int): The ID of the player.
         """
         self.__id = id
+        
     def to_dict(self):
         """
         Returns a dictionary representation of the player.
@@ -49,55 +51,66 @@ class Player(User):
     def __init__(self, name, email):
         super().__init__(name)
         self.email = email
-        self.get_user()
+        self.squad_id: str
+        self.get_player()
+        
 
-    def get_user(self):
+    def get_player(self):
         """
-        Get the user from the database.
+        Get the player from the database.
         """
         player = self.get_player_by_email(self.email)
         if player:
             self.set_id(player["id"])
             self.name = player["name"]
             self.email = player["email"]
-            self.enterprise = player["enterprise"]
+            self.squad_id = player["squad_id"]
             logging.info(f"Player {self.name} found with id {self.get_id()}")
+        else:
+            self.create_player()
         
-    def create_user(self):
+    def create_player(self):
             """
-            Creates a new user in the database with the provided name and email.
+            Creates a new player in the database with the provided name and email.
             """
-            doc_ref = db.collection("users").document()
+            doc_ref = db.collection("player").document()
             self.set_id(doc_ref.id)
             doc_ref.set(
                 {
                     "name": self.name,
                     "email": self.email,
+                    "squad_id": "xzC8ollQoBJRv9l7ZhUG",
                 }
             )
+            self.squad_id = "xzC8ollQoBJRv9l7ZhUG"
             logging.info(f"User {self.name} created with id {self.get_id()}")
 
     def get_player_by_email(self, email):
-        # Check if the player exists in Firebase
-        players_ref = db.collection("users")
-        query = players_ref.where("email", "==", email).limit(1)
-        results = query.get()
-        logging.info(f"Searching for player with email {email}")
-
-        for player_doc in results:
-            player_data = player_doc.to_dict()
-            player_data["id"] = player_doc.id
-            logging.info(f"Player {player_data['name']} found : {player_data['email']}")
-            return player_data
-
+        player = db_get_player_by_email(email)
+        if player and len(player) > 0:
+            return player
+        
         return None
+        # # Check if the player exists in Firebase
+        # players_ref = db.collection("player")
+        # query = players_ref.where("email", "==", email).limit(1)
+        # results = query.get()
+        # logging.info(f"Searching for player with email {email}")
 
-    def get_enterprise(self):
+        # for player_doc in results:
+        #     player_data = player_doc.to_dict()
+        #     player_data["id"] = player_doc.id
+        #     logging.info(f"Player {player_data['name']} found : {player_data['email']}")
+        #     return player_data
+
+        # return None
+
+    def get_squad(self):
         """
-        Returns the enterprise associated with the player.
+        Returns the squad associated with the player.
 
         Returns:
-            str: The name of the enterprise.
+            str: The name of the squad.
         """
-        return self.enterprise
+        return self.squad_id
 

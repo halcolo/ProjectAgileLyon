@@ -1,5 +1,5 @@
 from config import app
-from api_routes import index, user, task, error
+from api_routes import index, player, task, error
 
 
 urls = {

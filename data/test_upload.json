@@ -1,0 +1,24 @@
+[
+    {
+        "name": "SNA-001",
+        "gameMode": 1,
+        "players": [
+            {
+                "name": "Player 1",
+                "score": 0
+            },
+            {
+                "name": "Player 2",
+                "score": 0
+            }
+        ]
+    },
+    {
+        "name": "BNT-001",
+        "gameMode": 1
+    },
+    {
+        "name": "BNT-002",
+        "gameMode": 1
+    }
+]

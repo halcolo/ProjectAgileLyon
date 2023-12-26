@@ -35,8 +35,8 @@ class PlayerView(MethodView):
         print(name, email)
 
         # try:
-        #     # user = auth.get_user_by_email(email)
-        #     # If the user exists, retrieve the player
+        #     # player = auth.get_player_by_email(email)
+        #     # If the player exists, retrieve the player
         #     player = self.game.get_player_by_email(email)
         #     if player:
         #         return response_message("Player already exists")
@@ -44,6 +44,6 @@ class PlayerView(MethodView):
         #         self.game.add_player(name, email)
         #         return response_message("Player added")
         # except auth.AuthError as e:
-        #     # Handle the case when the user does not exist
+        #     # Handle the case when the player does not exist
         #     return response_message("User does not exist")
 
