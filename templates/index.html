@@ -3,7 +3,7 @@
 {% extends "layout.html" %}
 
 {% block y %}
-      <!-- Start buttons user  -->
+      <!-- Start buttons player  -->
       <div class="d-flex" id="accordionSidebar">
          <div id="page-content-wrapper">
             <div class="container-fluid">
@@ -15,29 +15,29 @@
                               <h1 class="m-0 font-weight-bold text-primar">Planning Poker</h1>
                            </div>
                         </div>
-                        <div class="accordion" id="accordionExample">
+                        <div class="accordion" id="accordionMenu">
                            <div class="accordion-item">
                              <h2 class="accordion-header">
                                <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                  Create task
                                </button>
                              </h2>
-                             <div id="collapseOne" class="accordion-collapse collapsed collapse" data-bs-parent="#accordionExample">
+                             <div id="collapseOne" class="accordion-collapse collapsed collapse" data-bs-parent="#accordionMenu">
                                <div class="accordion-body">
                                  <div class="card-header py-2">
                                     <div class="card-header py-3">
                                        <div id="newTaskForm">
                                           <form role="form" method="POST" action="{{ url_for('task') }}">
                                              <label for="taskName">Task ID:</label><br>
-                                             <input type="text" id="taskName" name="taskName"><br>
+                                             <input class="form-control" type="text" id="taskName" name="taskName"><br>
                                              <label for="gameMode">Game mode:</label><br>
-                                             <select id="gameMode" name="gameMode">
+                                             <select class="form-select" id="gameMode" name="gameMode">
                                                 {% for mode, id in modes.items() %}
                                                    <option value="{{ id }}">{{ mode }}</option>
                                                 {% endfor %}
                                              </select><br>
                   
-                                             <input type="submit" value="Create game">
+                                             <input class="form-control" type="submit" value="Create game">
                                           </form>
                                        </div>
                                     </div>   
@@ -50,37 +50,55 @@
                                  Join To task
                                </button>
                              </h2>
-                             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionMenu">
                                <div class="accordion-body">
                                  <div class="card-header py-3">
                                     <div id="joinTaskForm">
                                        <form role="form" method="POST" action="{{ url_for('task') }}">
                                           <label for="taskCode">Game Code:</label><br>
-                                          <input type="text" id="taskCode" name="taskCode"><br>
-                                          <input type="submit" value="Join Game">
+                                          <input class="form-control" type="text" id="taskCode" name="taskCode"><br>
+                                          <input class="form-control" type="submit" value="Join Game">
                                        </form>
                                     </div>
                                  </div>
                                </div>
                              </div>
                            </div>
+                           <div class="accordion-item">
+                              <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                  Upload JSON
+                                </button>
+                              </h2>
+                              <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionMenu">
+                                <div class="accordion-body">
+                                  <div class="card-header py-3">
+                                     <div id="joinTaskForm">
+                                        <form role="form" method="POST" action="{{ url_for('task') }}">
+                                          <label for="taskCode">File JSON:</label><br>
+                                          <input class="form-control" type="file" id="fileNameUpload" name="fileNameUpload" onchange="validateFile(this)"><br>
+                                          <input class="form-control" type="submit" value="Upload file">
+                                        </form>
+                                     </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                          </div>
-
-                           <!-- </div> -->
                            You are Register {{ session.name }} <a href="{{ url_for('logout') }}">logout</a>.<br>
                      </ul>
                   </div>
                </div>
             </div>
       </div>
-      <!-- End buttons user  -->
+      <!-- End buttons player  -->
       <div class="d-flex flex-column">
          <!-- Start Task Table -->
          <div class="card-body">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                <thead>
                   <tr>
-                     <th hidden>Join Code</th>
+                     <th>Join Code</th>
                      <th>Task id</th>
                      <th>Final Score</th>
                      <th>Action</th>
@@ -89,10 +107,10 @@
                <tbody>
                {% for task in tasks_list %}
                <tr>
-                  <td hidden id="taskJoin{{ loop.index }}">{{ task.get('id') }}</td>
+                  <td id="taskJoin{{ loop.index }}">{{ task.get('id') }}</td>
                   <td id="taskName{{ loop.index }}">{{ task.get("task_id") }}</td>
                   <td id="taskScore{{ loop.index }}">{{ task.get("final_score") }}</td>
-                  <td><a onclick="usersFunction({{task.get('users')}})" id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
+                  <td><a onclick="playerFunction({{task.get('player')}})" id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
                </tr>
             {% endfor %}
                </tbody>
@@ -124,7 +142,6 @@
                                        <Label for="floatingInputValue" class="col-form-legend col-4">
                                           Join Code
                                        </Label>
-                                       <!-- <label for="joinCode" class="col-4 col-form-label">Join Code</label> -->
                                        <div class="col-8">
                                           <input type="text" class="form-control" name="TaskId" id="TaskId" placeholder="Task Id" readonly/>
                                        </div>
@@ -133,7 +150,6 @@
                                        <Label for="floatingInputValue" class="col-form-legend col-4">
                                           Task Name
                                        </Label>
-                                       <!-- <label for="taskName" class="col-4 col-form-label">name</label> -->
                                        <div class="col-8">
                                           <input type="text" class="form-control" name="TaskName" id="TaskName" placeholder="Task name" readonly/>
                                        </div>
@@ -163,8 +179,9 @@
                                              Send
                                           </button>
                                        </div>
+                                       <br>
                                        <span class="">
-                                          <div id="usersScores"class="col-sm-8"></div>
+                                          <div id="playerScores" class="col-sm-8"></div>
                                        </span>
                                     </div>
                                  </form>

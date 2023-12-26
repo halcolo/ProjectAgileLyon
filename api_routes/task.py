@@ -1,8 +1,8 @@
 from package.task import Task
 from tools.db_utils import db_add_player_2_task
 from tools.general_utils import update_task_points
+from tools.session_controller import get_sessions
 from flask import (
-    render_template,
     redirect,
     request,
     session,
@@ -40,16 +40,30 @@ class TaskView(MethodView):
             A redirect to the /game route.
         """
         data = request.form.to_dict()
+        print(data)
+        # For joining a game
         if "taskCode" in data.keys():
             db_add_player_2_task(
                 player_id=session["player_id"], 
                 task_id=data["taskCode"],
                 )
-            return redirect("/")
-        planning_name = data["taskName"]
-        game_mode = data["gameMode"]
-        self.game = Task(planning_name, game_mode)
-        self.game.create_task()
+        # For creating a game from
+        elif data.get("jsonData"):
+            import json
+            json_data = data["jsonData"]
+            json_data = json.loads(eval(json_data))
+            for item in json_data:
+                print(item)
+                if item.get('name') and item.get('gameMode'):
+                    self.game = Task(task_id=item.get('name'), mode=int(item.get('gameMode')))
+                    self.game.create_task()
+        
+        # For create a game
+        elif data.get("taskName"):
+            planning_name = data["taskName"]
+            game_mode = data["gameMode"]
+            self.game = Task(planning_name, game_mode)
+            self.game.create_task()
         return redirect("/")
     
     def put(self, task_id:str, game_name:str, score:str):

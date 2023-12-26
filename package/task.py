@@ -1,58 +1,69 @@
 import statistics
-from package.modes import Estimation
 from package.player import Player
-from tools.db_utils import db_get_doc, db_create_doc
+from tools.db_utils import (db_get_doc, 
+                            db_create_doc, 
+                            db_delete_doc,
+                            db_get_player_by_email)
 from tools.class_utils import Singleton
 from datetime import datetime
 from flask import session
 
 
-@Singleton
+# @Singleton
 class Task:
-    # _instance = None
+    _instance = None
 
-    # def __new__(cls, *args, **kwargs):
-    #     if not cls._instance:
-    #         cls._instance = super().__new__(cls)
-    #     return cls._instance
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
     def __init__(self, task_id: str, mode:str='', id:str=''):
         
         self.id:str
         self.task_id = task_id
         self.mode = mode
-        self.mode = None
         
-        if self.id != '' and id is not None:
+        if id != '':
             self.get_task_from_db(id) 
             
         self.players = list()
         self.tasks = list()
         self.colleciton = "task"
         self.stimations = dict()
-        self.enterprise = None
+        self.squad_id = None
         self.final_score = None
         self.manager = None
         self.creation_date = None
         self.status = None
         self.task_mode = None
-        self.estimation_type:Estimation
         
 
-    def create_task(self):
+    def create_task(self, player_check=True):
         task = dict()
         task["task_id"] = self.task_id
         task["status"] = True
-        task["players"] = {session["player_id"]: 0}
-        task["enterprise"] = session["enterprise"]
+        if player_check:
+            task["players"] = {session["player_id"]: 0}
+            task["squad_id"] = session["squad_id"]
+            task["manager"] = session["player_id"]
         task["creation_date"] = datetime.now()
         task["game_mode"] = self.mode
-        task["manager"] = session["player_id"]
         task["final_score"] = 0
-        db_create_doc(self.colleciton, task)
+        document_id = db_create_doc(self.colleciton, task)
+        print("document_id:", document_id)
+        self.id = document_id
+        
+    def delete_task(self):
+        db_delete_doc(self.colleciton, self.id)
+        self.id = None
+        
 
     def add_player(self, name, email):
-        self.players.append(Player(name, email))
+        player = db_get_player_by_email(email)
+        if player:
+            self.players.append(player)
+        # self.players.append(Player(name, email))
 
     def create_planning(self, planning_name, card_quantity, tasks, game_mode):
         self.planning_name = planning_name
@@ -66,9 +77,9 @@ class Task:
     def to_dict(self):
         data = {
             'id': self.id,
-            'name': self.name,
+            'name': self.task_id,
             'stimations': self.stimations,
-            'enterprise': self.enterprise,
+            'squad_id': self.squad_id,
             'final_score': self.final_score,
             'manager': self.manager,
             'creation_date': self.creation_date,
@@ -78,10 +89,9 @@ class Task:
         
         return data
 
-        
-    @classmethod
-    def check_data_exist(cls):
-        if cls.task_id is None or cls.task_id == '':
+
+    def check_data_exist(self):
+        if self.task_id is None or self.task_id == '':
             return False
         return True
     
@@ -92,7 +102,7 @@ class Task:
             return None
         self.name = task_dict['task_id']
         self.stimations = task_dict['players']
-        self.enterprise = task_dict['enterprise']
+        self.squad_id = task_dict['squad_id']
         self.final_score = task_dict['final_score']
         self.manager = task_dict['manager']
         self.creation_date = task_dict['creation_date']
