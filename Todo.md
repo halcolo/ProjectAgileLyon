@@ -6,20 +6,22 @@
   - [ ] Using Templaters already createds improve using CSS and JS.
   - [ ] Responsive Web
 
-- task calculation
-  - [ ] Implement task calculation.
 
 - UI/UX
   - [ ] Finish UI/UX improvement.
 
 ## IN PROGRESS
 
-- [ ] "Modes" de jeu bien implémentées
 - [ ] Implementation de documentation.
-- [ ]
+- [ ] Improve game modes
+- [ ] Improve README.md
+- [ ] Fix error of show game type in index
 
 
 ## DONE:
+- [X] "Modes" Well implemented.
+- task calculation
+  - [x] Implement task calculation.
 
 - [x] Create basic Game logic
 - [x] Create game values and show tasks.

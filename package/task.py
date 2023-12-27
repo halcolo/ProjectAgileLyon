@@ -4,7 +4,6 @@ from tools.db_utils import (db_get_doc,
                             db_create_doc, 
                             db_delete_doc,
                             db_get_player_by_email)
-from tools.class_utils import Singleton
 from datetime import datetime
 from flask import session
 
@@ -39,11 +38,11 @@ class Task:
         self.task_mode = None
         
 
-    def create_task(self, player_check=True):
+    def create_task(self, session_check=True):
         task = dict()
         task["task_id"] = self.task_id
         task["status"] = True
-        if player_check:
+        if session_check:
             task["players"] = {session["player_id"]: 0}
             task["squad_id"] = session["squad_id"]
             task["manager"] = session["player_id"]
@@ -55,6 +54,7 @@ class Task:
         self.id = document_id
         
     def delete_task(self):
+        print("deleting task:", self.id)
         db_delete_doc(self.colleciton, self.id)
         self.id = None
         
@@ -64,6 +64,9 @@ class Task:
         if player:
             self.players.append(player)
         # self.players.append(Player(name, email))
+        
+    def get_players(self):
+        return self.players
 
     def create_planning(self, planning_name, card_quantity, tasks, game_mode):
         self.planning_name = planning_name
@@ -76,8 +79,8 @@ class Task:
 
     def to_dict(self):
         data = {
-            'id': self.id,
-            'name': self.task_id,
+            'id': self.get_id(),
+            'task_id': self.task_id,
             'stimations': self.stimations,
             'squad_id': self.squad_id,
             'final_score': self.final_score,
@@ -95,20 +98,24 @@ class Task:
             return False
         return True
     
+    def get_id(self):
+        return self.id
+    
     @classmethod
-    def get_task_from_db(self, id):
+    def get_task_from_db(self, id, session_check=True):
         task_dict = db_get_doc('task', id)
         if task_dict is None:
             return None
         self.name = task_dict['task_id']
-        self.stimations = task_dict['players']
-        self.squad_id = task_dict['squad_id']
+        if session_check:
+            self.stimations = task_dict['players']
+            self.squad_id = task_dict['squad_id']
+            self.manager = task_dict['manager']
         self.final_score = task_dict['final_score']
-        self.manager = task_dict['manager']
         self.creation_date = task_dict['creation_date']
         self.status = task_dict['status']
         self.task_mode = task_dict['game_mode']
            
     @classmethod
     def from_dict(cls, task_dict):
-        return cls(task_dict['id'], task_dict['name'], task_dict['description'])
+        return cls(task_dict['task_id'], task_dict['mode'])
