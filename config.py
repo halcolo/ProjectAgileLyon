@@ -3,6 +3,7 @@ from flask import Flask
 from flask_session import Session
 import firebase_admin
 from firebase_admin import credentials, firestore
+import json
 
 PORT = 3000
 app = Flask(__name__, static_url_path="/static")
@@ -21,8 +22,9 @@ app.config["PERMANENT_SESSION_LIFETIME"] = 3600
 Session(app)
 
 # Configurar Firebase
-path = os.path.dirname(os.path.abspath(__file__))
-cred = credentials.Certificate(f"{path}/serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(credential=credentials.Certificate({**json.loads(os.environ['SERVICE_ACCOUNT_KEY'])}))
+# path = os.path.dirname(os.path.abspath(__file__))
+# cred = credentials.Certificate(f"{path}/serviceAccountKey.json")
+# firebase_admin.initialize_app(cred)
 
 db = firestore.client()
