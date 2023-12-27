@@ -3,19 +3,19 @@
     - [ ] Réalisation et exécution : 10 points
         - [x] Clone git qui fonctionne (0,5 pts)
         - [x] Code qui tourne directement sur l’ordinateur de l’évaluateur (1 pt)
-        - [ ] Qualité du code (2 pts)
-        - [ ] Structure globale du code (0,5 pts)
+        - [x] Qualité du code (2 pts)
+        - [x] Structure globale du code (0,5 pts)
         - [ ] README et respect des consignes (1 pts)
         - [x] Interface (UI) propre (1 pts)
-        - [ ] "Modes" de jeu implémentées (2 pts)
+        - [x] "Modes" de jeu implémentées (2 pts)
         - [x] Chargement/sauvegarde de fichier JSON (1 pts)
         - [ ] Patterns mis en œuvre (1 pts)
         - [ ] Mise en place de l'intégration continue (2pts)
-            - [ ] Tests unitaires
-            - [ ] Génération de la documentation
+            - [x] Tests unitaires
+            - [x] Génération de la documentation
     - [ ] Rapport et modélisation : 10 points
-        - [ ] Justifications des Patterns utilisés (3 patterns) (3pts)
-        - [ ] justification des choix techniques (architecture, langage, classes, etc.) (3pts)
+        - [x] Justifications des Patterns utilisés (3 patterns) (3pts)
+        - [x] justification des choix techniques (architecture, langage, classes, etc.) (3pts)
         - [ ] Documentation (2pts)
         - [ ] Explication de la mise en place de l'intégration continue (2pts)
             - [ ] Tests unitaires

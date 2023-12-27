@@ -101,6 +101,7 @@
                      <th>Join Code</th>
                      <th>Task id</th>
                      <th>Final Score</th>
+                     <th>Game Type</th>
                      <th>Action</th>
                   </tr>
                </thead>
@@ -110,6 +111,7 @@
                   <td id="taskJoin{{ loop.index }}">{{ task.get('id') }}</td>
                   <td id="taskName{{ loop.index }}">{{ task.get("task_id") }}</td>
                   <td id="taskScore{{ loop.index }}">{{ task.get("final_score") }}</td>
+                  <td id="taskMode{{ loop.index }}">{{ task.get("game_mode") }}</td>
                   <td><a onclick="playerFunction({{task.get('player')}})" id="taskEdit{{ loop.index }}" href="#"><i class="bi bi-pencil-square"></i></a></td>
                </tr>
             {% endfor %}

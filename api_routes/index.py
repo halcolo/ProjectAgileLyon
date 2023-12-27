@@ -1,6 +1,7 @@
 from package.player import Player, User
 from tools.session_controller import get_sessions, set_sessions, clear_sessions
 from tools.db_utils import db_get_doc, db_set_doc, db_get_doc_by_field
+from tools.general_utils import get_mode_string
 # from config import db
 from flask import render_template, redirect, request
 from flask.views import MethodView
@@ -41,7 +42,7 @@ class Index(MethodView):
 
         session_vars = get_sessions("squad_id", "player_id")
         squad_id = session_vars["squad_id"]
-        player_id = session_vars["player_id"]
+        player_session_id = session_vars["player_id"]
 
         modes = db_get_doc("dicts", "modes")
         cards = db_get_doc("dicts", "cards")
@@ -54,7 +55,8 @@ class Index(MethodView):
         # Set all tasks with players
         if len(games) > 0:
             for game in games:
-                if player_id in game.get("players"):
+                # Checking player available tasks
+                if player_session_id in game.get("players"):
                     player_scores = list()
                     for player_id, score in game.get("players").items():
                         player_db = db_get_doc("player", player_id)
@@ -68,6 +70,7 @@ class Index(MethodView):
                         'task_id': game.get("task_id"),
                         'player': player_scores,
                         'final_score': game.get("final_score"),
+                        'game_mode': get_mode_string(game.get("game_mode")),
                     }
                     tasks_list.append(data)
         
@@ -92,7 +95,7 @@ class Login(MethodView):
         return render_template("login.html")
 
     def post(self):
-        try:
+        # try:
             name, email = request.form.get("name"), request.form.get("email")
             player = Player(name, email)
             
@@ -105,8 +108,9 @@ class Login(MethodView):
                 squad_id=player.get_squad(),
             )
             return redirect("/")
-        except Exception as e:
-            return render_template("login", error=e)
+        # except Exception as e:
+        #     print(e)
+        #     return render_template("login.html", error=e)
 
 
 class Logout(MethodView):

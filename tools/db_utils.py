@@ -40,7 +40,7 @@ def db_create_doc(collection_name: str, data: dict, auto_id: bool = True):
             f"Document created successfully in collection {collection_name}"
         )
     except Exception as e:
-        return response_message(f"An error occurred while crating the document: {e}", 500)
+        return response_message(f"An error occurred while creating the document: {e}", 500)
 
 def db_delete_doc(collection_name: str, doc_id: str):
     """
@@ -59,6 +59,7 @@ def db_delete_doc(collection_name: str, doc_id: str):
             f"Document deleted successfully from collection {collection_name}"
         )
     except Exception as e:
+        print("error deleting document:", e)
         return response_message(f"An error occurred while deleting the document: {e}", 500)
     
 
