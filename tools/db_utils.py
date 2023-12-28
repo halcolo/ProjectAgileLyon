@@ -40,7 +40,10 @@ def db_create_doc(collection_name: str, data: dict, auto_id: bool = True):
             f"Document created successfully in collection {collection_name}"
         )
     except Exception as e:
-        return response_message(f"An error occurred while creating the document: {e}", 500)
+        return response_message(
+            f"An error occurred while creating the document: {e}", 500
+        )
+
 
 def db_delete_doc(collection_name: str, doc_id: str):
     """
@@ -60,8 +63,10 @@ def db_delete_doc(collection_name: str, doc_id: str):
         )
     except Exception as e:
         print("error deleting document:", e)
-        return response_message(f"An error occurred while deleting the document: {e}", 500)
-    
+        return response_message(
+            f"An error occurred while deleting the document: {e}", 500
+        )
+
 
 def db_add_player_2_task(player_id: str, task_id: str):
     """
@@ -88,7 +93,8 @@ def db_add_player_2_task(player_id: str, task_id: str):
             500,
         )
 
-def db_get_doc(collection_name:str, doc_id: str) -> dict:
+
+def db_get_doc(collection_name: str, doc_id: str) -> dict:
     """
     Retrieve a document from the specified collection.
 
@@ -103,9 +109,12 @@ def db_get_doc(collection_name:str, doc_id: str) -> dict:
         doc = db.collection(collection_name).document(doc_id).get().to_dict()
         return doc
     except Exception as e:
-        return response_message(f"An error occurred while retrieving the document: {e}", 500)
-    
-def db_get_doc_by_field(collection_name:str, field:str, value:str) -> list:
+        return response_message(
+            f"An error occurred while retrieving the document: {e}", 500
+        )
+
+
+def db_get_doc_by_field(collection_name: str, field: str, value: str) -> list:
     """
     Retrieve a document from the specified collection.
 
@@ -128,9 +137,12 @@ def db_get_doc_by_field(collection_name:str, field:str, value:str) -> list:
 
         return docs
     except Exception as e:
-        return response_message(f"An error occurred while retrieving the document: {e}", 500)
-    
-def db_set_doc(collection_name:str, doc_id: str, data:dict) -> dict:
+        return response_message(
+            f"An error occurred while retrieving the document: {e}", 500
+        )
+
+
+def db_set_doc(collection_name: str, doc_id: str, data: dict) -> dict:
     """
     Update a document in the specified collection.
 
@@ -144,11 +156,16 @@ def db_set_doc(collection_name:str, doc_id: str, data:dict) -> dict:
     """
     try:
         db.collection(collection_name).document(doc_id).set(data)
-        return response_message(f"Document updated successfully in collection {collection_name}")
+        return response_message(
+            f"Document updated successfully in collection {collection_name}"
+        )
     except Exception as e:
-        return response_message(f"An error occurred while updating the document: {e}", 500)
-    
-def db_get_player_by_email(player_email:str) -> dict:
+        return response_message(
+            f"An error occurred while updating the document: {e}", 500
+        )
+
+
+def db_get_player_by_email(player_email: str) -> dict:
     """
     Retrieve a player document from the database.
 
@@ -159,13 +176,17 @@ def db_get_player_by_email(player_email:str) -> dict:
         dict: A dictionary containing the player data.
     """
     try:
-        player_records = db.collection("player").where("email", "==", player_email).get()
+        player_records = (
+            db.collection("player").where("email", "==", player_email).get()
+        )
         if len(player_records) > 0:
             player = player_records[0].to_dict()
             player["id"] = player_records[0].id
             return player
         else:
             return dict()
-        
+
     except Exception as e:
-        return response_message(f"An error occurred while retrieving the player: {e}", 500)   
+        return response_message(
+            f"An error occurred while retrieving the player: {e}", 500
+        )

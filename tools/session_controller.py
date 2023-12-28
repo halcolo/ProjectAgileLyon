@@ -1,6 +1,7 @@
 from flask import session
 import logging
 
+
 def set_sessions(**kwargs):
     try:
         for key, value in kwargs.items():
@@ -8,7 +9,8 @@ def set_sessions(**kwargs):
     except KeyError:
         logging.error(f"Session variable {key} not setted correctly")
         return None
-        
+
+
 def get_sessions(*args):
     try:
         data = dict()
@@ -18,7 +20,8 @@ def get_sessions(*args):
     except KeyError:
         logging.error(f"Session variable {arg} not found")
         return None
-    
+
+
 def clear_sessions():
     session.clear()
-    logging.info("Sessions cleared")    
+    logging.info("Sessions cleared")

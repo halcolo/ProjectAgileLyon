@@ -1,8 +1,10 @@
 from flask import jsonify
 from flask import request
+
 # from tools.general_utils import response_message
 from flask.views import MethodView
 from firebase_admin import auth
+
 
 class PlayerView(MethodView):
     """
@@ -11,7 +13,7 @@ class PlayerView(MethodView):
 
     def __init__(self) -> None:
         super().__init__()
-        
+
     def get(self):
         """
         Get method for retrieving player information.
@@ -20,7 +22,6 @@ class PlayerView(MethodView):
             A JSON response with a message.
         """
         return jsonify({"message": "Hello, world!"})
-    
 
     def post(self):
         """
@@ -29,9 +30,9 @@ class PlayerView(MethodView):
         Returns:
             A response indicating that the player has been added.
         """
-        name = request.args.get('name')
-        email = request.args.get('email')
-        
+        name = request.args.get("name")
+        email = request.args.get("email")
+
         print(name, email)
 
         # try:
@@ -46,4 +47,3 @@ class PlayerView(MethodView):
         # except auth.AuthError as e:
         #     # Handle the case when the player does not exist
         #     return response_message("User does not exist")
-

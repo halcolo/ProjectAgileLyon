@@ -2,6 +2,7 @@ from package.player import Player, User
 from tools.session_controller import get_sessions, set_sessions, clear_sessions
 from tools.db_utils import db_get_doc, db_set_doc, db_get_doc_by_field
 from tools.general_utils import get_mode_string
+
 # from config import db
 from flask import render_template, redirect, request
 from flask.views import MethodView
@@ -49,7 +50,7 @@ class Index(MethodView):
         if cards:
             cards = cards.get("fibbo_13")
         else:
-            cards = list((1, 3, 5, 8, 13, 21, 34, 55, 89, 'coffee'))
+            cards = list((1, 3, 5, 8, 13, 21, 34, 55, 89, "coffee"))
         games = db_get_doc_by_field("task", "squad_id", squad_id)
         tasks_list = list()
         # Set all tasks with players
@@ -66,15 +67,17 @@ class Index(MethodView):
                         player_dict["score"] = score
                         player_scores.append(player_dict)
                     data = {
-                        'id': game.get("id"),
-                        'task_id': game.get("task_id"),
-                        'player': player_scores,
-                        'final_score': game.get("final_score"),
-                        'game_mode': get_mode_string(game.get("game_mode")),
+                        "id": game.get("id"),
+                        "task_id": game.get("task_id"),
+                        "player": player_scores,
+                        "final_score": game.get("final_score"),
+                        "game_mode": get_mode_string(game.get("game_mode")),
                     }
                     tasks_list.append(data)
-        
-        return render_template("index.html", tasks_list=tasks_list, modes=modes, cards=cards)
+
+        return render_template(
+            "index.html", tasks_list=tasks_list, modes=modes, cards=cards
+        )
 
 
 class Login(MethodView):
@@ -96,21 +99,22 @@ class Login(MethodView):
 
     def post(self):
         # try:
-            name, email = request.form.get("name"), request.form.get("email")
-            player = Player(name, email)
-            
-            # Setting up session variables
-            player_name, player_id = player.get_data()
-            set_sessions(
-                id=player_id,
-                name=player_name, 
-                player_id=player.get_id(),
-                squad_id=player.get_squad(),
-            )
-            return redirect("/")
-        # except Exception as e:
-        #     print(e)
-        #     return render_template("login.html", error=e)
+        name, email = request.form.get("name"), request.form.get("email")
+        player = Player(name, email)
+
+        # Setting up session variables
+        player_name, player_id = player.get_data()
+        set_sessions(
+            id=player_id,
+            name=player_name,
+            player_id=player.get_id(),
+            squad_id=player.get_squad(),
+        )
+        return redirect("/")
+
+    # except Exception as e:
+    #     print(e)
+    #     return render_template("login.html", error=e)
 
 
 class Logout(MethodView):

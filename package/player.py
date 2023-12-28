@@ -1,16 +1,17 @@
 import logging
 from tools.db_utils import (
-    db_get_player_by_email, 
+    db_get_player_by_email,
     db_delete_doc,
     db_create_doc,
-    )
+)
 import logging
+
 
 class User:
     def __init__(self, name) -> None:
         self.name = name
         self.__id: str
-        
+
     def get_data(self) -> tuple:
         """
         Get the name and email of the player.
@@ -19,7 +20,6 @@ class User:
             tuple: A tuple containing the name and email of the player.
         """
         return self.name, self.__id
-
 
     def get_id(self):
         """
@@ -38,7 +38,7 @@ class User:
             id (int): The ID of the player.
         """
         self.__id = id
-        
+
     def to_dict(self):
         """
         Returns a dictionary representation of the player.
@@ -50,6 +50,7 @@ class User:
             "name": self.name,
             "id": self.get_id(),
         }
+
 
 class Player(User):
     """
@@ -136,4 +137,3 @@ class Player(User):
         :rtype: str
         """
         return self.squad_id
-
