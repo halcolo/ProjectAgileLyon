@@ -22,7 +22,11 @@ app.config["PERMANENT_SESSION_LIFETIME"] = 3600
 Session(app)
 
 # Configurar Firebase
-firebase_admin.initialize_app(credential=credentials.Certificate({**json.loads(os.environ['SERVICE_ACCOUNT_KEY'])}))
+firebase_admin.initialize_app(
+    credential=credentials.Certificate(
+        {**json.loads(os.environ["SERVICE_ACCOUNT_KEY"])}
+    )
+)
 # path = os.path.dirname(os.path.abspath(__file__))
 # cred = credentials.Certificate(f"{path}/serviceAccountKey.json")
 # firebase_admin.initialize_app(cred)

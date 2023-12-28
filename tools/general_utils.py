@@ -4,10 +4,9 @@ import statistics
 import logging
 
 
-def update_task_points(player_id:str,
-                       task_id:str, 
-                       score:str, 
-                       collection:str="task"):
+def update_task_points(
+    player_id: str, task_id: str, score: str, collection: str = "task"
+):
     """
     Updates the points of a player in a game task.
 
@@ -22,61 +21,57 @@ def update_task_points(player_id:str,
     """
     try:
         # task = Task(id=task_id)
-        game = db_get_doc(
-            collection_name=collection, 
-            doc_id=task_id
-            )
+        game = db_get_doc(collection_name=collection, doc_id=task_id)
         players = game["players"]
         # Check if the player exists in the game
         if player_id in players.keys() and int(players[player_id]) == 0:
             players[player_id] = score
-            
+
             if len(players) > 1:
-        
+
                 game["players"] = players
-                
+
                 # Getting the players that have not yet scored game
                 players_scored = [int(s) for s in players.values() if int(s) == 0]
-                
+
                 # If all players have scored, calculate the final score
                 if len(players_scored) == 0 and game.get("final_score") == 0:
-                    new_score, type_res =  calculate_result(
-                            game_mode=int(game.get('game_mode')),
-                            players=players)
+                    new_score, type_res = calculate_result(
+                        game_mode=int(game.get("game_mode")), players=players
+                    )
                     # Setting up the final score and game mode
                     game["final_score"] = new_score
                     game["game_mode"] = type_res
 
-            db_set_doc(
-                collection_name=collection, 
-                doc_id=task_id, 
-                data=game
-                )
+            db_set_doc(collection_name=collection, doc_id=task_id, data=game)
         return response_message(f"Player {player_id} added to game {task_id}")
     except Exception as e:
         return response_message(
             f"An error occurred while adding player {player_id} to game {task_id}: {e}",
             500,
         )
-     
+
+
 def check_score(func):
     """
     Decorator function that checks the score returned by the decorated function.
-    
+
     Args:
         func: The function to be decorated.
-    
+
     Returns:
         A wrapper function that checks the score returned by the decorated function.
         If the score is not None and is an integer, it is returned along with the type_res.
         Otherwise, 0 is returned.
     """
+
     def wrapper(*args, **kwargs):
         score, type_res = func(*args, **kwargs)
         if score is not None and isinstance(int(score), int):
-            return int(score), type_res  
+            return int(score), type_res
         else:
             return 0
+
     return wrapper
 
 
@@ -89,6 +84,7 @@ def get_modes():
     """
     game_types = db_get_doc("dicts", "modes")
     return game_types
+
 
 def get_mode_string(mode):
     """
@@ -109,7 +105,8 @@ def get_mode_string(mode):
     except Exception as e:
         logging.error(f"An error occurred while getting the game mode: {e}")
         return None
-    
+
+
 def get_mode_int(mode):
     """
     Returns the game mode integer corresponding to the given mode.
@@ -129,9 +126,10 @@ def get_mode_int(mode):
     except Exception as e:
         logging.error(f"An error occurred while getting the game mode: {e}")
         return None
-    
+
+
 @check_score
-def calculate_result(game_mode, players) -> tuple :
+def calculate_result(game_mode, players) -> tuple:
     """
     Calculate the result of a game based on the game mode and players' scores.
 

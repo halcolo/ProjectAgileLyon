@@ -19,13 +19,13 @@ editButtons.forEach(function(button) {
         document.getElementById('TaskName').value = taskName;
         document.getElementById('playPoker').style.display = 'block';
         // Get the value from the input with id "TaskId"
-        
+
     });
 });
 
 /**
  * Updates the player' scores list in the HTML document.
- * 
+ *
  * @param {Array} player - An array of player objects.
  */
 function playerFunction(player) {
@@ -73,7 +73,7 @@ function validateFile(input) {
         try {
             const fileContent = event.target.result;
             const jsonData = JSON.parse(fileContent);
-            
+
             // Check if the file has the expected format
             if (Array.isArray(jsonData) && jsonData.length > 0) {
                 const firstItem = jsonData[0];
@@ -86,11 +86,11 @@ function validateFile(input) {
                     hiddenInput.setAttribute("type", "hidden");
                     hiddenInput.setAttribute("name", "jsonData");
                     hiddenInput.setAttribute("value", jsonString);
-                    
+
                     // Append the hidden input field to the form
                     var form = document.getElementById("fileNameUpload").closest("form");
                     form.appendChild(hiddenInput);
-                    
+
                     // Submit the fojsonStringrm
                     // form.submit();
                 } else {
