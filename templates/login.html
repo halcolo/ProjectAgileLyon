@@ -4,7 +4,7 @@
 {% block login %}
 <div class="form-signin w-100 m-auto align-middle">
    <form method="POST" action="{{ url_for('login') }}">
-      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+      <h1 class="h3 mb-3 fw-normal">Please Log in</h1>
 
       <div class="form-floating">
         <input name="name" type="text" class="form-control" id="floatingPassword" placeholder="Password">
@@ -21,9 +21,13 @@
           Remember me
         </label> -->
       </div>
-      <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-      <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+      <button class="btn btn-primary w-100 py-2" type="submit">Log in</button>
+      <p class="mt-5 mb-3 text-body-secondary">© 2023</p>
    </form>
+   <br>
+  <a class="btn btn-primary" href="{{ url_for('signin') }}" role="button">Sign in</a>
+  <a class="btn btn-primary" href="{{ url_for('login') }}" role="button">Log in</a>
+    <br>
    {% if error %}
    <div class="alert alert-danger" role="alert">
      Error in process of login {{ error }}

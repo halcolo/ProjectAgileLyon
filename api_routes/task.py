@@ -1,11 +1,12 @@
 from package.task import Task
-from tools.db_utils import db_add_player_2_task
+from tools.db_utils import db_add_player_2_task, db_get_doc
 from tools.general_utils import update_task_points
 from tools.session_controller import get_sessions
 from flask import (
     redirect,
     request,
     session,
+    render_template,
 )
 from flask.views import MethodView
 
@@ -43,6 +44,9 @@ class TaskView(MethodView):
         print(data)
         # For joining a game
         if "taskCode" in data.keys():
+            # self.squad_id = get_sessions("squad_id")
+            # task = db_get_doc("task", data["taskCode"])
+            # if task.get("squad_id") == self.squad_id:
             db_add_player_2_task(
                 player_id=session["player_id"],
                 task_id=data["taskCode"],

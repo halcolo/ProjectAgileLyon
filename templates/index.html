@@ -33,10 +33,11 @@
                                              <label for="gameMode">Game mode:</label><br>
                                              <select class="form-select" id="gameMode" name="gameMode">
                                                 {% for mode, id in modes.items() %}
-                                                   <option value="{{ id }}">{{ mode }}</option>
+                                                   {% if id != '0'%}
+                                                      <option value="{{ id }}">{{ mode }}</option>
+                                                   {% endif %}
                                                 {% endfor %}
                                              </select><br>
-
                                              <input class="form-control" type="submit" value="Create game">
                                           </form>
                                        </div>
@@ -196,6 +197,11 @@
             </div>
          </div>
          <!-- End planning poker -->
+         {% if error %}
+         <div class="alert alert-danger" role="alert">
+           Error: {{ error }}
+         </div>
+         {% endif %}
       </div>
    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}

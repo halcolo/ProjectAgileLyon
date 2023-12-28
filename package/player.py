@@ -74,7 +74,6 @@ class Player(User):
         super().__init__(name)
         self.email = email
         self.squad_id: str
-        self.get_player()
 
     def get_player(self):
         """
@@ -88,13 +87,14 @@ class Player(User):
             self.squad_id = player["squad_id"]
             logging.info(f"Player {self.name} found with id {self.get_id()}")
         else:
-            self.create_player()
+            raise Exception("Player not found")
+            # self.create_player()
 
-    def create_player(self):
+    def create_player(self, squad_id):
         """
         Creates a new player in the database with the provided name and email.
         """
-        squad_id = "xzC8ollQoBJRv9l7ZhUG"
+        # squad_id = "xzC8ollQoBJRv9l7ZhUG"
         data = {
             "name": self.name,
             "email": self.email,

@@ -1,0 +1,43 @@
+
+{% extends "layout.html" %}
+
+{% block login %}
+<div class="form-signin w-100 m-auto align-middle">
+   <form method="POST" action="{{ url_for('signin') }}">
+      <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+      <div class="form-floating">
+        <input name="name" type="text" class="form-control" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Name</label>
+      </div>
+      <div class="form-floating">
+        <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="card-header py-3">
+        <label name="squad" type="squad" for="squadMode">Squad</label><br>
+        <select class="form-select" id="squad" name="squad">
+            {% for squad in squads %}
+              <option value="{{ squad.id }}">{{ squad.name }}</option>
+            {% endfor %}
+       </select><br>
+      </div>
+
+      <div class="form-check text-start my-3">
+      </div>
+      <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+      <p class="mt-5 mb-3 text-body-secondary">© 2023</p>
+   </form>
+   <br>
+      <a class="btn btn-primary" href="{{ url_for('signin') }}" role="button">Sign in</a>
+      <a class="btn btn-primary" href="{{ url_for('login') }}" role="button">Log in</a>
+    <br/>
+    <br/>
+   {% if error %}
+   <div class="alert alert-danger" role="alert">
+     Error in process of sign in {{ error }}
+   </div>
+   {% endif %}
+  </div>
+
+{% endblock %}

@@ -94,6 +94,29 @@ def db_add_player_2_task(player_id: str, task_id: str):
         )
 
 
+def get_all_docs(collection_name: str) -> list:
+    """
+    Retrieve all documents from the specified collection.
+
+    Args:
+        collection_name (str): The name of the collection to retrieve the documents from.
+
+    Returns:
+        list: A list containing the documents.
+    """
+    try:
+        docs = list()
+        for doc in db.collection(collection_name).get():
+            data = doc.to_dict()
+            data["id"] = doc.id
+            docs.append(data)
+        return docs
+    except Exception as e:
+        return response_message(
+            f"An error occurred while retrieving the documents: {e}", 500
+        )
+
+
 def db_get_doc(collection_name: str, doc_id: str) -> dict:
     """
     Retrieve a document from the specified collection.
