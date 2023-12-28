@@ -11,3 +11,12 @@ repos:
     hooks:
     -   id: black
         exclude: ^dist/
+-   repo: local
+    hooks:
+    -   id: tests
+        name: run tests
+        entry: |
+          bash -c 'source ~/.pyenv/versions/web_agile/bin/activate && python test.py'
+        language: python
+        types: [python]
+        stages: [commit]
